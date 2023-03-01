@@ -1,29 +1,39 @@
-function getTimestampInSeconds () {
-    return Math.floor(Date.now() / 1000)
-  }
+const prompt = require("prompt-sync")({
+    sigint: true
+});
+//get current time
+var d = new Date();
+var n = d.getTime();
+//get time in hours and minutes
+var hours = d.getHours();
+var minutes = d.getMinutes();
 
-let unix_timestamp = getTimestampInSeconds()
-var date = new Date(unix_timestamp * 1000)
+//determine if time is AM or PM
+var ampm = hours >= 12 ? 'PM' : 'AM';
+hours = hours % 12;
+hours = hours ? hours : 12; // the hour '0' should be '12'
+minutes = minutes < 10 ? '0' + minutes : minutes;
+var strTime = hours + ':' + minutes + ' ' + ampm;
 
-// Hours part from the timestamp
-var hours = date.getHours()
+//prompt user for input on how many hours to add or subtract
 
-// Minutes part from the timestamp
-var minutes = "0" + date.getMinutes()
-if (hours >= 13) hours = hours - 12
+var input = prompt("Enter number of hours to add or subtract from current time.");
 
-// Will display time in 10:30 format
-var formattedTime = hours + ':' + minutes.substr(-2)
+//convert input to number
+var num = Number(input);
+//add or subtract input from current time
+var newTime = n + (num * 3600000);
+//convert new time to date
+var newDate = new Date(newTime);
+//get new time in hours and minutes
+var newHours = newDate.getHours();
+var newMinutes = newDate.getMinutes();
+//determine if new time is AM or PM
+var newAmpm = newHours >= 12 ? 'PM' : 'AM';
+newHours = newHours % 12;
+newHours = newHours ? newHours : 12; // the hour '0' should be '12'
+newMinutes = newMinutes < 10 ? '0' + newMinutes : newMinutes;
+var newStrTime = newHours + ':' + newMinutes + ' ' + newAmpm;
 
-// Will determine if the time of day is am or pm
-var ampm = "am"
-if( hours > 12 ) {
-    hours -= 12
-    
-} else {
-    ampm = "pm"
-}
-
-
-
-console.log(formattedTime + ampm)
+//display current time and new time
+console.log("Current time is " + strTime + ". New time is " + newStrTime + ".");
